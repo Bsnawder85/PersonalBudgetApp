@@ -1,51 +1,48 @@
 import pandas as pd
 import random as rand
-import numpy as npy
+import numpy as np
 import matplotlib as mat
 from matplotlib import pyplot
 from datetime import datetime as dt
 from datetime import date
 from datetime import timedelta
-import tkinter as tkk
 
 
 # set up variable to get the year
 
 today = date.today()
+database = pd.read_csv('sampledata.csv')
 
 
 
+print(database)
 
-# test = date(2022,7,2)  this will get now's date
 
-sampletable = {
-    'DATE (YYYY-MM-DD)': [today, today, today, today, today]
-    , 'INCOME': [
-        3000, 3000, 3000, 3000, 3000
-    ]
-    , 'EXPENSES': [
-        rand.randint(100, 500),
-        rand.randint(100, 500),
-        rand.randint(100, 500),
-        rand.randint(100, 500),
-        rand.randint(100, 500)
-    ]
-    , 'SAVINGS': [
-        rand.randint(1, 100),
-        rand.randint(1, 50),
-        rand.randint(1, 20),
-        rand.randint(1, 100),
-        rand.randint(1, 100)
-    ]
-}
-df = pd.DataFrame(data=sampletable)
-df['TOTAL'] = df['INCOME'] - df['EXPENSES'] - df['SAVINGS']
+new_income: int
+new_expense: int
+new_savings: int
+new_total: int
+
+# get user input for new row in db
+
+
+new_income = int(input("Enter new income: $"))
+new_expense = int(input("Enter new expense: $"))
+new_savings = int(input("Enter savings: $"))
+new_total = new_income - new_expense - new_savings
 
 
 
+new_db_entry = pd.DataFrame({
+    "DATE (YYYY-MM-DD)": [today],
+    'INCOME': [new_income],
+    'EXPENSES': [new_expense],
+    'SAVINGS': [new_savings],
+    'TOTAL': [new_total]
+}, index=False)
 
-# df.to_csv('sampledata.csv', index=False)
+new_db_entry.to_csv('sampledata.csv', mode='a', index=False, header=False)
 
+print("\n\nHere is the new data in the database:\n\n")
+print(pd.read_csv('sampledata.csv'))
 
-
-print(df)
